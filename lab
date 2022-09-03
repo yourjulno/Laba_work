@@ -1,0 +1,52 @@
+from matplotlib import markers
+import numpy as np
+import bloodFunctions as b
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+import matplotlib.lines as mlines
+import math
+
+
+o = np.loadtxt('temperature.txt', dtype=float)
+l = np.loadtxt('pressure.txt', dtype=float)
+time = 5/(1000*o)
+P = time
+UF = 64.61 + P
+P = [95, 69, 99, 122, 142, 63, 84]
+Q = [0.072, 0.054, 0.074, 0.088, 0.098, 0.048, 0.064]
+P_log = np.log(time)
+w = np.array(l)
+#fig, ax = plt.subplots(figsize=(7, 6), dpi=150)
+fig, ax = plt.subplots()
+
+#T_1 = np.array(T)
+#D_1 = np.array(D)
+
+#T_2 = np.log(TIME) #здесь ln(Q)
+#D_2 = np.log(D_1)
+ax.scatter(o, l, color='red', s=5, marker='o')
+
+y = l
+x = o
+#print(P_mas_pa)
+# print(x)
+# print(P_log)
+k = np.polyfit(x, y, 1)
+y = np.polyval(k, x)
+
+#ax.plot(x, y, label='Коэффициент наклона = -5821.9')
+ax.plot(x, y)
+ax.set_xlabel("ln(R)")
+ax.set_ylabel("ln(Q)")
+ax.minorticks_on()
+#plt.title("T = 50C")
+ax.grid(which='major', linewidth=1)
+ax.grid(which="minor", linestyle=':')
+#ax.set(xlim=(14, 17), ylim=(0, 0.4))
+ax.legend()
+plt.savefig('calibration.png')
+
+print(k[0])
+# print(k[1])
+plt.show()
+
